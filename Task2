@@ -1,0 +1,22 @@
+package org.example;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        var scanner = new Scanner(System.in);
+
+        System.out.println("Enter the vehicle speed in kilometers per hour");
+        var speed = scanner.nextDouble();
+
+        while (true) {
+
+            System.out.println("Enter travel time in hours");
+
+
+            var time = scanner.nextDouble();
+            var distance = speed*time;
+            System.out.println("Distance:" + distance);
+
+        }
+    }
+}
