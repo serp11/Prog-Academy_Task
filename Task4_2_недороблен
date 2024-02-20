@@ -1,0 +1,84 @@
+package org.example;
+
+import net.thauvin.erik.crypto.CryptoPrice;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.Random;
+import java.util.Scanner;
+public class MyBot extends TelegramLongPollingBot {
+    private Random scanner;
+
+    public MyBot() {
+        super("6735101656:AAFbjzKU26CGYHC9Nm0AdvDaw18NxFJlM1I");
+    }
+        @Override
+    public void onUpdateReceived(Update update) {
+        var chatId = update.getMessage().getChatId();
+        var text = update.getMessage().getText();
+        var scanner = new Scanner(System.in);
+
+
+
+        try {
+            if (text.equals("/start")) {
+                sendMessage(chatId, "Hello!");
+            } else if (text.equals("all")) {
+                sendPicture(chatId, "Bitcoin.png");
+                sendPrice(chatId, "BTC");
+                sendPicture(chatId, "ethereum.png");
+                sendPrice(chatId, "ETH");
+                sendPicture(chatId, "bnb.png");
+                sendPrice(chatId, "BNB");
+            } else if (text.equals("btc")) {
+                sendPicture(chatId, "Bitcoin.png");
+                sendPrice(chatId, "BTC");
+
+            } else if (text.equals("eth")) {
+                sendPicture(chatId, "ethereum.png");
+                sendPrice(chatId, "ETH");
+
+            } else if (text.equals("bnb")) {
+                sendPicture(chatId, "bnb.png");
+                sendPrice(chatId, "BNB");
+            } else {
+                sendMessage(chatId, "Unknown command!");
+            }
+        } catch (Exception e) {
+            System.out.println("Error!");
+        }
+
+    }
+    void sendDollars(long chatId, String name) throws Exception {
+        var dollars = scanner.nextDouble();
+
+
+    }
+    void sendPrice(long chatId, String name) throws Exception {
+        var price = CryptoPrice.spotPrice(name);
+        sendMessage(chatId, name + " price: " + price.getAmount().doubleValue());
+    }
+
+    void sendPicture(long chatId, String name) throws Exception {
+        var photo = getClass().getClassLoader().getResourceAsStream(name);
+        var message = new SendPhoto();
+        message.setChatId(chatId);
+        message.setPhoto(new InputFile(photo, name));
+        execute(message);
+    }
+
+    void sendMessage(long chatId, String text) throws Exception {
+        var message = new SendMessage();
+        message.setChatId(chatId);
+        message.setText(text);
+        execute(message);
+    }
+    @Override
+    public String getBotUsername() {
+        return "serp_task3_bot";
+    }
+}
+//https://t.me/serp_task3_bot
